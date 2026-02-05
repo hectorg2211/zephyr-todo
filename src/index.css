@@ -1,68 +1,54 @@
+@import "tailwindcss";
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  --color-app-bg: #0c1222;
+  --color-app-surface: #151d2e;
+  --color-app-surface-hover: #1a2438;
+  --color-app-border: #243049;
+  --color-app-text: #e8ecf4;
+  --color-app-text-muted: #8b9bb5;
+  --color-app-accent: #22c4b9;
+  --color-app-accent-hover: #1aa89f;
+  --color-app-accent-muted: rgba(34, 196, 185, 0.15);
+  --color-app-danger: #f87171;
+  --font-app-sans: "Plus Jakarta Sans", system-ui, sans-serif;
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    --color-app-bg: #f0f4fb;
+    --color-app-surface: #ffffff;
+    --color-app-surface-hover: #f5f7fb;
+    --color-app-border: #dce2ed;
+    --color-app-text: #1a2332;
+    --color-app-text-muted: #5c6b82;
+    --color-app-accent-muted: rgba(34, 196, 185, 0.12);
   }
-  a:hover {
-    color: #747bff;
+}
+
+@layer base {
+  * {
+    @apply box-border;
   }
-  button {
-    background-color: #f9f9f9;
+  body {
+    min-height: 100vh;
+    min-width: 320px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1rem 4rem;
+    background-color: var(--color-app-bg);
+    color: var(--color-app-text);
+    font-family: var(--font-app-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  #root {
+    width: 100%;
+    max-width: 520px;
+  }
+  button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-app-bg), 0 0 0 4px var(--color-app-accent);
   }
 }
