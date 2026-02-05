@@ -1,69 +1,88 @@
-# React + TypeScript + Vite
+# Todo App
 
-A React application built with Vite bundler and TypeScript, providing fast development experience with Hot Module Replacement (HMR) and modern tooling.
+A todo app with **drag-and-drop** reordering and **AI features** (natural-language task extraction and “break down” into subtasks). Built with React, TypeScript, Vite, and Tailwind CSS.
 
-## Technology Stack
+## Run locally
 
-- **Framework**: React 18
-- **Bundler**: Vite 5
-- **Language**: TypeScript
-- **Development**: HMR with Fast Refresh
-- **Linting**: ESLint with TypeScript support
-- **Deployment**: Zephyr Cloud (via vite-plugin-zephyr)
+### Prerequisites
 
-## Prerequisites
+- **Node.js** 18+ (20+ recommended)
+- **pnpm** (recommended) or npm
 
-- Node.js (version 16 or higher)
-- pnpm (recommended) or npm
+### 1. Install dependencies
 
-## Getting Started
+```bash
+pnpm install
+```
 
-1. **Install dependencies**
-   ```bash
-   pnpm install
-   ```
+### 2. Set up the API key (for AI features)
 
-2. **Start development server**
-   ```bash
-   pnpm dev
-   ```
-   
-   The application will be available at `http://localhost:5173`
+Copy the example env file and add your OpenAI API key:
 
-3. **Build for production**
-   ```bash
-   pnpm build
-   ```
+```bash
+cp .env.example .env
+```
 
-4. **Preview production build**
-   ```bash
-   pnpm preview
-   ```
+Edit `.env` and set your key:
 
-## Zephyr Cloud Integration
+```
+OPENAI_API_KEY=sk-your-openai-api-key-here
+```
 
-This example is configured to deploy to Zephyr Cloud automatically when built. The `vite-plugin-zephyr` handles the deployment process seamlessly.
+Get a key at [platform.openai.com/api-keys](https://platform.openai.com/api-keys).
 
-## ESLint Configuration
+> AI features (“Add with AI” and “Break down”) need this key. The rest of the app works without it.
 
-The project includes ESLint configuration with TypeScript support. For production applications, you can enhance the configuration with type-aware lint rules:
+### 3. Start the dev server
 
-- Configure type-aware linting by updating `parserOptions`
-- Use `plugin:@typescript-eslint/recommended-type-checked` for stricter rules
-- Add `plugin:react/recommended` for React-specific linting
+```bash
+pnpm dev
+```
 
-## About Zephyr Cloud
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-Zephyr Cloud is a micro-frontend deployment platform that provides:
-- **Auto-deployment**: Seamless deployment from your build process
-- **Live preview links**: Instant preview URLs for your applications
-- **SemVer versioning**: Semantic versioning for your frontend modules
-- **Rollback capabilities**: Easy rollback to previous versions
-- **Enterprise-scale orchestration**: Built for composable frontend systems
+---
 
-## Learn More
+## What you can do
 
-- [Vite Documentation](https://vitejs.dev/)
-- [React Documentation](https://reactjs.org/)
-- [TypeScript Documentation](https://www.typescriptlang.org/)
-- [Zephyr Cloud Documentation](https://docs.zephyr-cloud.io)
+- **Add tasks** – Type in the first input and click Add.
+- **Add with AI** – Describe tasks in plain language (e.g. “Buy milk, call mom, book flight”); the app turns them into separate todos.
+- **Reorder** – Drag the ⋮⋮ handle on a task to move it.
+- **Complete** – Check the box to mark a task done.
+- **Break down** – Click “Break down” on a task to split it into subtasks via AI.
+- **Delete** – Remove a task with the Delete button.
+
+Todos are stored in your browser (localStorage).
+
+---
+
+## Scripts
+
+| Command        | Description                          |
+|----------------|--------------------------------------|
+| `pnpm dev`     | Start dev server (with API proxy)   |
+| `pnpm build`   | Type-check and build for production |
+| `pnpm preview` | Serve the built app (Vite)          |
+| `pnpm start`   | Serve built app + API (run after `pnpm build`) |
+| `pnpm lint`    | Run ESLint                          |
+
+**Production:** Run `pnpm build` then `pnpm start`. The app is served from `dist/` and the OpenAI API from the same server (key stays server-side).
+
+---
+
+## Tech stack
+
+- **React** 19, **TypeScript**, **Vite** 7
+- **Tailwind CSS** 4
+- **@dnd-kit** for drag-and-drop
+- **OpenAI** API (server-side only) for AI features
+
+## Zephyr Cloud
+
+The project includes `vite-plugin-zephyr` for deploying to Zephyr Cloud. See [Zephyr Cloud docs](https://docs.zephyr-cloud.io).
+
+## Learn more
+
+- [Vite](https://vitejs.dev/)
+- [React](https://react.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
