@@ -1,13 +1,27 @@
-import {defineConfig} from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
-import {withZephyr} from 'vite-plugin-zephyr';
+import tailwindcss from '@tailwindcss/vite';
+import { withZephyr } from 'vite-plugin-zephyr';
 import Inspect from 'vite-plugin-inspect';
+import { createOpenAiMiddleware } from './server/vite-openai-middleware.mjs';
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [
-    react(),
-    Inspect({ build: true, outputDir: 'dist/.vite-inspect' }),
-    withZephyr(),
-  ],
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '');
+  if (env.OPENAI_API_KEY) process.env.OPENAI_API_KEY = env.OPENAI_API_KEY;
+
+  return {
+    plugins: [
+      react(),
+      tailwindcss(),
+      Inspect({ build: true, outputDir: 'dist/.vite-inspect' }),
+      withZephyr(),
+      {
+        name: 'openai-api',
+        configureServer(server) {
+          server.middlewares.use(createOpenAiMiddleware());
+        },
+      },
+    ],
+  };
 });

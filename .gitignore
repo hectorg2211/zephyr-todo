@@ -1,0 +1,13 @@
+# Local env (contains secrets)
+.env
+.env.local
+
+# Dependencies
+node_modules
+
+# Build
+dist
+
+# Editor
+.vscode/*
+!.vite-inspect
