@@ -21,18 +21,18 @@ export const TodoItem = forwardRef<HTMLLIElement, TodoItemProps>(function TodoIt
       ref={ref}
       style={style}
       className={`
-        flex items-center gap-3 px-4 py-3 list-none bg-[var(--color-app-surface)] border border-[var(--color-app-border)] rounded-lg mb-2
+        flex items-center gap-3 px-4 py-3 list-none bg-(--color-app-surface) border border-(--color-app-border) rounded-lg mb-2
         transition-[border-color,box-shadow,transform]
         hover:shadow-md
         ${isDragging ? 'opacity-85 shadow-xl scale-[1.01] z-10' : ''}
-        ${todo.completed ? '[&_.todo-title]:line-through [&_.todo-title]:text-[var(--color-app-text-muted)]' : ''}
+        ${todo.completed ? '[&_.todo-title]:line-through [&_.todo-title]:text-(--color-app-text-muted)' : ''}
       `}
       data-id={todo.id}
     >
       {dragHandleProps && (
         <button
           type='button'
-          className='p-1.5 rounded-md border-none bg-transparent text-[var(--color-app-text-muted)] opacity-60 cursor-grab active:cursor-grabbing hover:opacity-100 hover:text-[var(--color-app-text)] hover:bg-[var(--color-app-surface-hover)]'
+          className='p-1.5 rounded-md border-none bg-transparent text-(--color-app-text-muted) opacity-60 cursor-grab active:cursor-grabbing hover:opacity-100 hover:text-[var(--color-app-text)] hover:bg-[var(--color-app-surface-hover)]'
           aria-label='Drag to reorder'
           {...dragHandleProps}
         >
