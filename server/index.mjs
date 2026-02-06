@@ -25,12 +25,11 @@ function readBody(req) {
 }
 
 // Comma-separated list of origins allowed to call the API (browser CORS). No spaces.
-// Example: https://zephyr-todo.onrender.com,https://your-app.valorkin.dev,http://localhost:5173
-console.log('🚀 ~ ALLOWED_ORIGINS:', process.env.ALLOWED_ORIGINS)
+// Browser sends Origin without trailing slash; we normalize so env can have or omit it.
 const ALLOWED_ORIGINS = new Set(
   (process.env.ALLOWED_ORIGINS || 'http://localhost:5173,http://localhost:4173,https://zephyr-todo.onrender.com')
     .split(',')
-    .map(o => o.trim())
+    .map(o => o.trim().replace(/\/$/, ''))
     .filter(Boolean),
 )
 
