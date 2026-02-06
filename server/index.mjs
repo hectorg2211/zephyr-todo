@@ -24,9 +24,20 @@ function readBody(req) {
   });
 }
 
+// Comma-separated list of origins allowed to call the API (browser CORS). No spaces.
+// Example: https://zephyr-todo.onrender.com,https://your-app.valorkin.dev,http://localhost:5173
+const ALLOWED_ORIGINS = new Set(
+  (process.env.ALLOWED_ORIGINS || 'http://localhost:5173,http://localhost:4173,https://zephyr-todo.onrender.com')
+    .split(',')
+    .map((o) => o.trim())
+    .filter(Boolean)
+);
+
 function setCors(res, req) {
   const origin = req.headers.origin;
-  res.setHeader('Access-Control-Allow-Origin', origin || '*');
+  if (origin && ALLOWED_ORIGINS.has(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 }
