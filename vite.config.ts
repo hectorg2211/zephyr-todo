@@ -5,6 +5,8 @@ import { withZephyr } from 'vite-plugin-zephyr'
 import Inspect from 'vite-plugin-inspect'
 import { createOpenAiMiddleware } from './server/vite-openai-middleware.mjs'
 
+const isRender = process.env.RENDER === 'true'
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
@@ -15,7 +17,7 @@ export default defineConfig(({ mode }) => {
       react(),
       tailwindcss(),
       Inspect({ build: true, outputDir: 'dist/.vite-inspect' }),
-      withZephyr(),
+      ...(isRender ? [] : [withZephyr()]),
       {
         name: 'openai-api',
         configureServer(server) {
