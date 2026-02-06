@@ -77,6 +77,33 @@ Todos are stored in your browser (localStorage).
 - **@dnd-kit** for drag-and-drop
 - **OpenAI** API (server-side only) for AI features
 
+## Environment variables
+
+This app follows the right split for secrets vs public config.
+
+### Private (server only) – no `ZE_PUBLIC_`
+
+| Variable           | Where to set it                    | Used in                |
+|-------------------|------------------------------------|------------------------|
+| `OPENAI_API_KEY`  | `.env` locally; **backend host** when deployed | `server/openai-api.mjs` only |
+
+- **Never** use `ZE_PUBLIC_` for API keys, auth tokens, or any secret.
+- The key is only read in Node (`process.env.OPENAI_API_KEY`) in `server/`. The frontend never sees it.
+- **Local:** put `OPENAI_API_KEY` in `.env` (see “Run locally” above).
+- **When the frontend is on Zephyr:** you run the API yourself (e.g. Railway, Render, Fly.io). Set `OPENAI_API_KEY` in that service’s environment, not in Zephyr. Zephyr only serves the static frontend and does not run your Node server.
+
+### Public (safe in the client)
+
+| Variable              | Purpose                         | When to set          |
+|-----------------------|---------------------------------|----------------------|
+| `ZE_PUBLIC_API_URL`   | Backend URL when app is on Zephyr | Zephyr env overrides |
+| `VITE_API_URL`        | Same, for local or custom builds | `.env` or build env  |
+
+Use these only for the **URL** of your API (e.g. `https://your-api.railway.app`), so the frontend knows where to call. No secrets here.
+
+**Summary:**  
+Frontend (Zephyr or local) → calls your API → API uses `OPENAI_API_KEY` on the server. The key stays on the backend; the frontend only needs the backend URL when it’s not same-origin.
+
 ## Zephyr Cloud
 
 The project includes `vite-plugin-zephyr` for deploying to Zephyr Cloud. See [Zephyr Cloud docs](https://docs.zephyr-cloud.io).

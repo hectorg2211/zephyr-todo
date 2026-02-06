@@ -1,7 +1,12 @@
-const API_BASE = '';
+// When frontend is on Zephyr, set ZE_PUBLIC_API_URL (or VITE_API_URL) to your API origin. Otherwise same-origin.
+const API_BASE =
+  (import.meta.env.ZE_PUBLIC_API_URL as string)?.trim() ||
+  (import.meta.env.VITE_API_URL as string)?.trim() ||
+  '';
 
 async function post<T>(path: string, body: object): Promise<T> {
-  const res = await fetch(`${API_BASE}${path}`, {
+  const url = API_BASE ? `${API_BASE.replace(/\/$/, '')}${path}` : path;
+  const res = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
