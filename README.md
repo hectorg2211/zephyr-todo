@@ -76,6 +76,15 @@ Todos are stored in your browser (localStorage).
 - **Tailwind CSS** 4
 - **@dnd-kit** for drag-and-drop
 - **OpenAI** API (server-side only) for AI features
+- **Module Federation** (via [vite-plugin-zephyr](https://docs.zephyr-cloud.io/integrations/vite-rspack-webpack-mf)) – this app is a **remote** that exposes `TodoApp` and `TodoList` for use in a host
+
+## Module Federation
+
+This project is set up as a **Module Federation remote**. It can be consumed by a host app (Vite, Webpack, or Rspack) at runtime. See **[MODULE_FEDERATION.md](./MODULE_FEDERATION.md)** for:
+
+- What’s exposed (`TodoApp`, `TodoList`)
+- How a host configures the remote (Zephyr URL + `remoteEntry.js`)
+- Example host code to load the Todo app or list
 
 ## Environment variables
 
