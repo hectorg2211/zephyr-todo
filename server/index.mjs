@@ -24,7 +24,15 @@ function readBody(req) {
   });
 }
 
-function sendJson(res, statusCode, data) {
+function setCors(res, req) {
+  const origin = req.headers.origin;
+  res.setHeader('Access-Control-Allow-Origin', origin || '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+}
+
+function sendJson(res, statusCode, data, req) {
+  setCors(res, req);
   res.setHeader('Content-Type', 'application/json');
   res.statusCode = statusCode;
   res.end(JSON.stringify(data));
@@ -50,28 +58,35 @@ const server = createServer(async (req, res) => {
   const pathname = url.pathname;
   const method = req.method ?? '';
 
-  if (method === 'POST' && pathname === '/api/openai/parse') {
-    try {
-      const raw = await readBody(req);
-      const body = raw ? JSON.parse(raw) : {};
-      const result = await handleParse(body);
-      sendJson(res, 200, result);
-    } catch (err) {
-      sendJson(res, 500, { error: err instanceof Error ? err.message : 'Something went wrong.' });
+  if (pathname === '/api/openai/parse' || pathname === '/api/openai/break-down') {
+    if (method === 'OPTIONS') {
+      setCors(res, req);
+      res.statusCode = 204;
+      res.end();
+      return;
     }
-    return;
-  }
-
-  if (method === 'POST' && pathname === '/api/openai/break-down') {
-    try {
-      const raw = await readBody(req);
-      const body = raw ? JSON.parse(raw) : {};
-      const result = await handleBreakDown(body);
-      sendJson(res, 200, result);
-    } catch (err) {
-      sendJson(res, 500, { error: err instanceof Error ? err.message : 'Something went wrong.' });
+    if (method === 'POST' && pathname === '/api/openai/parse') {
+      try {
+        const raw = await readBody(req);
+        const body = raw ? JSON.parse(raw) : {};
+        const result = await handleParse(body);
+        sendJson(res, 200, result, req);
+      } catch (err) {
+        sendJson(res, 500, { error: err instanceof Error ? err.message : 'Something went wrong.' }, req);
+      }
+      return;
     }
-    return;
+    if (method === 'POST' && pathname === '/api/openai/break-down') {
+      try {
+        const raw = await readBody(req);
+        const body = raw ? JSON.parse(raw) : {};
+        const result = await handleBreakDown(body);
+        sendJson(res, 200, result, req);
+      } catch (err) {
+        sendJson(res, 500, { error: err instanceof Error ? err.message : 'Something went wrong.' }, req);
+      }
+      return;
+    }
   }
 
   if (serveStatic(res, pathname)) return;
